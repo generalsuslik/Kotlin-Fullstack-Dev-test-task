@@ -6,6 +6,7 @@
 
 using ll = long long;
 using ull = unsigned long long;
+using ld = long double;
 
 class User {
 	private:
@@ -14,9 +15,9 @@ class User {
 	public:
 		User();
 		~User();
-		int add_money(NCurrency::Currency currency, ull amount);
-		int take_money(NCurrency::Currency currency, ull amount);
-		ull get_money(NCurrency::Currency currency);
+		int add_money(NCurrency::Currency currency, ld amount);
+		int take_money(NCurrency::Currency currency, ld amount);
+		ld get_money(NCurrency::Currency currency);
 };
 
 #endif // USER_H

@@ -11,18 +11,20 @@
 
 using ll = long long;
 using ull = unsigned long long;
+using ld = long double;
 
 class Account {
 	private:
 		AccountInfo account_info;
 
 	public:
-		Account(NCurrency::Currency currency, ull amount);
+		Account(NCurrency::Currency currency, ld amount);
 		~Account();
-		ull add_money(ull amount);
-		ull remove_money(ull amount);
-		ull get_money();
+		ld add_money(ld amount);
+		ld take_money(ld amount);
+		ld get_money();
 		AccountInfo* get_info();
+		void set_info(NCurrency::Currency currency, ld amount);
 };
 
 #endif // ACCOUNT_H

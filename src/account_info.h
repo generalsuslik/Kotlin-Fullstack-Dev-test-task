@@ -2,8 +2,9 @@
 
 using ll = long long;
 using ull = unsigned long long;
+using ld = long double;
 
 typedef struct {
 	NCurrency::Currency currency;
-	ull      amount;
+	ld      			amount;
 } AccountInfo;
