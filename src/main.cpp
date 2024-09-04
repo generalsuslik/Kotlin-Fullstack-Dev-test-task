@@ -8,7 +8,7 @@ constexpr ull start_sum = 1'000'000;
 
 int main() {
 
-	Account* account = new Account(RUB, start_sum);
+	Account* account = new Account(NCurrency::RUB, start_sum);
 	
 	std::cout << "Yo\n";
 	std::cout << account->get_money() << std::endl;
