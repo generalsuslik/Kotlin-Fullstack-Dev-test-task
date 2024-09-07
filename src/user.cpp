@@ -9,7 +9,7 @@ NCurrency::Currency default_currency = NCurrency::RUB;
 ld start_money                      = 1'000'000;
 
 User::User() {
-	for (const NCurrency::Currency& currency : NCurrency::all) {
+	for (const NCurrency::Currency& currency : NCurrency::all_currencies) {
 		this->user_accounts[currency] = new Account(currency, 0);
 	}
 
