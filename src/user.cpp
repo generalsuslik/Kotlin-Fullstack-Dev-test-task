@@ -51,4 +51,10 @@ ld User::get_money(NCurrency::Currency currency) {
 	return this->user_accounts[currency]->get_money();
 }
 
+std::unordered_map<NCurrency::Currency, Account*> User::get_accounts() {
+	return this->user_accounts;
+}
+
+
+
 

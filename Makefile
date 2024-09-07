@@ -10,7 +10,7 @@ SOURCES = $(SRC_DIR)/*.cpp
 
 DEL_FILE = rm -f
 LIBS_DIRS = -I/.include/
-LIBS = $(LIBS_DIRS) -lstdc++
+LIBS = $(LIBS_DIRS) -lstdc++ -lm
 
 .PHONY: clean build
 all: clean build
