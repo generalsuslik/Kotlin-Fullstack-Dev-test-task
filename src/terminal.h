@@ -2,7 +2,6 @@
 #define TERMINAL_H
 
 #include <map>
-#include <vector>
 #include "account.h"
 #include "user.h"
 
@@ -12,7 +11,7 @@ using ld = long double;
 
 class Terminal {
 	private:
-		std::vector<Account*> accounts; // accounts like USD, RUB, BTC etc;	
+		std::map<NCurrency::Currency, Account*> accounts; // accounts like USD, RUB, BTC etc;	
 		
 		std::map<NCurrency::ChangeCurrency, ld> courses = {
 			{ NCurrency::RUB_USD, 0.011  },
@@ -28,6 +27,7 @@ class Terminal {
 		int change(User* user, NCurrency::Currency currency_from, NCurrency::Currency currency_to, NCurrency::ChangeCurrency change_currency, ld amount);
 		void change_course(NCurrency::ChangeCurrency change_currency);
 		void print_course();
+		void print_data();
 };
 
 #endif // TERMINAL_H

@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cmath>
 #include <random>
 
 #include "terminal.h"
@@ -6,6 +7,8 @@
 using ll = long long;
 using ull = unsigned long long;
 using ld = long double;
+
+constexpr ld EPS = 0.001;
 
 Terminal::Terminal() {
 	const std::pair<NCurrency::Currency, ld> start_amount[] = {
@@ -18,13 +21,13 @@ Terminal::Terminal() {
 
 	for (const auto& pair : start_amount) {
 		Account* account = new Account(pair.first, pair.second);
-		this->accounts.push_back(account);
+		this->accounts[pair.first] = account;
 	}
 }
 
 Terminal::~Terminal() {
-	for (const Account* account : this->accounts) {
-		delete account;
+	for (const auto& pair : this->accounts) {
+		delete pair.second; // delete Account*
 	} 
 }
 
@@ -34,6 +37,8 @@ Terminal::~Terminal() {
 int Terminal::change(User* user, NCurrency::Currency currency_from, NCurrency::Currency currency_to, NCurrency::ChangeCurrency change_currency, ld amount) {
 	Account* user_account_to_remove = user->get_accounts()[currency_from];
 	ld user_amount                  = user_account_to_remove->get_info()->amount;
+
+	// CHECKING USER
 	if (user_amount < amount) {
 		printf("OPERATION ERROR: lack of money on the account.\n");
 		return -1;
@@ -50,12 +55,27 @@ int Terminal::change(User* user, NCurrency::Currency currency_from, NCurrency::C
 
 	converted_amount = base * amount;
 
+	// CHECKING TERMINAL
+	Account* terminal_account_to_remove = this->accounts[currency_to];
+	if (terminal_account_to_remove->get_info()->amount - converted_amount <= EPS) {
+		printf("OPERATION ERROR: lack of money on the %s terminal account\n", NCurrency::titles.at(currency_to).c_str());
+		printf("U wanna take %.2Lf, but there is only %.2Lf left\n", converted_amount, terminal_account_to_remove->get_info()->amount);
+		return -1;
+	}
+	
 	// user account to add money
 	Account* user_account_to_add = user->get_accounts()[currency_to];
 
-	// adding and removing money
+	// updating user money
 	user_account_to_add->get_info()->amount += converted_amount;
 	user_account_to_remove->get_info()->amount -= amount;
+
+	// terminal account to add money
+	Account* terminal_account_to_add = this->accounts[currency_from];
+
+	// updating terminal money
+	terminal_account_to_remove->get_info()->amount -= converted_amount;
+	terminal_account_to_add->get_info()->amount += amount;
 
 	change_course(change_currency);
 
@@ -82,5 +102,20 @@ void Terminal::print_course() {
 		printf("%s: %Lf\n", pair.second.c_str(), this->courses.at(pair.first));
 	}
 }
+
+void Terminal::print_data() {
+	Account* account;
+	AccountInfo* account_info;
+	for (auto& account_pair : this->accounts) {
+		account = account_pair.second;
+		account_info = account->get_info();
+		
+		printf("%.2Lf %s\n", account_info->amount, NCurrency::titles.at(account_info->currency).c_str());
+		//printf("%.2Lf\n", account_info->amount);
+	}
+}
+
+
+
 
 

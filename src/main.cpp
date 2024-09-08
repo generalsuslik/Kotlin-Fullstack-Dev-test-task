@@ -34,6 +34,10 @@ int main() {
 	printf("\n");
 	printf("Start terminal course:\n");
 	terminal->print_course();
+
+	printf("\n");
+	printf("Start terminal money:\n");
+	terminal->print_data();
 	
 	printf("\n");
 	terminal->change(user, NCurrency::RUB, NCurrency::USD, NCurrency::RUB_USD, 10'000);
@@ -46,8 +50,14 @@ int main() {
 	printf("New course:\n");
 	terminal->print_course();
 
+	printf("\n");
+	printf("Current terminal data:\n");
+	terminal->print_data();
+
 	delete user;
+	printf("user deleted\n");
 	delete terminal;
+	printf("terminal deleted\n");
 
 	return 0;
 }
