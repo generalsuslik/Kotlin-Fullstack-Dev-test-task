@@ -46,7 +46,17 @@ namespace NCurrency {
 		{ RUB_EUR, "RUB - EUR" },
 		{ USD_EUR, "USD - EUR" },
 		{ USD_USDT, "USD - USDT" },
-		{ USD_BTC, "USD - BTC" }
+		{ USD_BTC, "USD - BTC" },
+
+		{ USD_RUB, "USD - RUB" },
+		{ EUR_RUB, "EUR - RUB" },
+		{ EUR_USD, "EUR - USD" },
+		{ USDT_USD, "USDT - USD" },
+		{ BTC_USD, "BTC - USD" }
 	};
 };
+
+
+
+
 

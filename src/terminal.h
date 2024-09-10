@@ -28,6 +28,7 @@ class Terminal {
 		void change_course(NCurrency::ChangeCurrency change_currency);
 		void print_course();
 		void print_data();
+		void print_promt();
 };
 
 #endif // TERMINAL_H

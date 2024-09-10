@@ -82,6 +82,9 @@ int Terminal::change(User* user, NCurrency::Currency currency_from, NCurrency::C
 	return 1;
 }
 
+/*
+ * changes course randomly for +-5%
+ */
 void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
 	ld course = this->courses[change_currency];
 	
@@ -98,11 +101,18 @@ void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
 }
 
 void Terminal::print_course() {
-	for (auto& pair : NCurrency::change_str) {
-		printf("%s: %Lf\n", pair.second.c_str(), this->courses.at(pair.first));
+	for (const auto& [change_currency, str] : NCurrency::change_str) {
+		if (this->courses.find(change_currency) != this->courses.end()) {
+			printf("%s: %Lf\n", str.c_str(), this->courses.at(change_currency));
+		} else {
+			printf("%s: %.2Lf\n", str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
+		}
 	}
 }
 
+/*
+ * prints terminal money info
+ */
 void Terminal::print_data() {
 	Account* account;
 	AccountInfo* account_info;
@@ -111,8 +121,25 @@ void Terminal::print_data() {
 		account_info = account->get_info();
 		
 		printf("%.2Lf %s\n", account_info->amount, NCurrency::titles.at(account_info->currency).c_str());
-		//printf("%.2Lf\n", account_info->amount);
 	}
+}
+
+/*
+ * prints interactive info for user
+ * to choose what currency to change
+ */
+void Terminal::print_promt() {
+	printf("Change pairs and course:\n");
+	int option = 1;
+	for (const auto& [change_currency, str] : NCurrency::change_str) {
+		if (this->courses.find(change_currency) != this->courses.end()) {
+			printf("%d) %s %Lf\n", option++, str.c_str(), courses.at(change_currency));
+		} else { 
+			printf("%d) %s %.2Lf\n", option++, str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
+		}
+	 }
+
+	printf("Select an option:\n");
 }
 
 
