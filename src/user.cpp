@@ -55,6 +55,12 @@ std::unordered_map<NCurrency::Currency, Account*> User::get_accounts() {
 	return this->user_accounts;
 }
 
+void User::print_info() {
+	for (NCurrency::Currency currency : NCurrency::all_currencies) {
+		printf("%.2Lf %s\n", this->get_money(currency), NCurrency::titles.at(currency).c_str());
+	}
+}
+
 
 
 

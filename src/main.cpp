@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdio>
 
 #include "terminal.h"
 #include "user.h"
@@ -18,9 +17,7 @@ void run() {
 	
 	printf("\n");
 	printf("User info:\n");
-	for (NCurrency::Currency currency : NCurrency::all_currencies) {
-		printf("%.2Lf %s\n", user->get_money(currency), NCurrency::titles.at(currency).c_str());
-	}
+	user->print_info();
 	
 	std::string ans;
 	int option;
@@ -55,17 +52,16 @@ void run() {
 			option = std::stoi(ans);
 		}
 		
-		printf("Option %d\n", option);
+		
 
-		printf("Do you want to get your info? (Y/n) or tyoe Q to quit\n");
+		printf("Do you want to get your info? (Y/n) or type Q to quit\n");
 		std::cin >> ans;
 		if (ans == "Q" || ans == "q") {
 			printf("Exiting...\n");
 			return;
 		}
 		if (ans == "Y" || ans == "y") {
-			//TODO: print user info
-			
+			user->print_info();	
 		}
 	}
 

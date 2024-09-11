@@ -100,16 +100,6 @@ void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
 	this->courses[change_currency] += res;
 }
 
-void Terminal::print_course() {
-	for (const auto& [change_currency, str] : NCurrency::change_str) {
-		if (this->courses.find(change_currency) != this->courses.end()) {
-			printf("%s: %Lf\n", str.c_str(), this->courses.at(change_currency));
-		} else {
-			printf("%s: %.2Lf\n", str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
-		}
-	}
-}
-
 /*
  * prints terminal money info
  */

@@ -19,6 +19,7 @@ class User {
 		int take_money(NCurrency::Currency currency, ld amount);
 		ld get_money(NCurrency::Currency currency);
 		std::unordered_map<NCurrency::Currency, Account*> get_accounts();
+		void print_info();
 };
 
 #endif // USER_H

@@ -21,12 +21,13 @@ class Terminal {
 			{ NCurrency::USD_BTC, 0.000018 }	
 		};
 
+		const int num_courses = courses.size();
+
 	public:
 		Terminal();
 		~Terminal();
 		int change(User* user, NCurrency::Currency currency_from, NCurrency::Currency currency_to, NCurrency::ChangeCurrency change_currency, ld amount);
 		void change_course(NCurrency::ChangeCurrency change_currency);
-		void print_course();
 		void print_data();
 		void print_promt();
 };
