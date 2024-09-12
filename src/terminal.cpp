@@ -34,7 +34,10 @@ Terminal::~Terminal() {
 /*
  * changes amount of <currency_from> to X <currency_to>
  */
-int Terminal::change(User* user, NCurrency::Currency currency_from, NCurrency::Currency currency_to, NCurrency::ChangeCurrency change_currency, ld amount) {
+int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld amount) {
+	NCurrency::Currency currency_from = NCurrency::change_currs.at(change_currency).first;
+	NCurrency::Currency currency_to   = NCurrency::change_currs.at(change_currency).second;
+
 	Account* user_account_to_remove = user->get_accounts()[currency_from];
 	ld user_amount                  = user_account_to_remove->get_info()->amount;
 
@@ -82,6 +85,14 @@ int Terminal::change(User* user, NCurrency::Currency currency_from, NCurrency::C
 	return 1;
 }
 
+ld Terminal::get_course(NCurrency::ChangeCurrency change_currency) {
+	if (this->courses.find(change_currency) != this->courses.end()) {
+		return this->courses.at(change_currency);
+	} else {
+		return 1 / this->courses.at(NCurrency::rev_currency.at(change_currency));
+	}
+}
+
 /*
  * changes course randomly for +-5%
  */
@@ -120,14 +131,25 @@ void Terminal::print_data() {
  */
 void Terminal::print_promt() {
 	printf("Change pairs and course:\n");
-	int option = 1;
-	for (const auto& [change_currency, str] : NCurrency::change_str) {
+	//int option = 1;
+	//for (const auto& [change_currency, str] : NCurrency::change_str) {
+	//	if (this->courses.find(change_currency) != this->courses.end()) {
+	//		printf("%d) %s %Lf\n", option++, str.c_str(), courses.at(change_currency));
+	//	} else { 
+	//		printf("%d) %s %.2Lf\n", option++, str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
+	//	}
+	//}
+	
+	size_t change_arr_size = NCurrency::rev_currency.size() * 2;
+	for (size_t option = 0; option < change_arr_size; ++option) {
+		NCurrency::ChangeCurrency change_currency = NCurrency::all_change_currencies[option];
+		std::string change_currency_str = NCurrency::change_str.at(change_currency);
 		if (this->courses.find(change_currency) != this->courses.end()) {
-			printf("%d) %s %Lf\n", option++, str.c_str(), courses.at(change_currency));
-		} else { 
-			printf("%d) %s %.2Lf\n", option++, str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
+			printf("%ld) %s %Lf\n", option + 1, change_currency_str.c_str(), this->courses.at(change_currency));
+		} else {
+			printf("%ld) %s %.2Lf\n", option + 1, change_currency_str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
 		}
-	 }
+	}
 
 	printf("Select an option:\n");
 }

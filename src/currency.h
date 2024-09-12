@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include <unordered_map>
 
 namespace NCurrency {
 	enum Currency {
@@ -41,6 +42,25 @@ namespace NCurrency {
 		{ BTC_USD, USD_BTC  }
 	};
 
+	static const ChangeCurrency all_change_currencies[] = { 
+			RUB_USD, RUB_EUR, USD_EUR, USD_USDT, USD_BTC, 
+			USD_RUB, EUR_RUB, EUR_USD, USDT_USD, BTC_USD 
+	};
+
+	static const std::map<ChangeCurrency, std::pair<Currency, Currency>> change_currs = {
+		{ RUB_USD, { RUB, USD } },
+		{ RUB_EUR, { RUB, EUR } },
+		{ USD_EUR, { USD, EUR } },
+		{ USD_USDT, { USD, USDT } },
+		{ USD_BTC, { USD, BTC } },
+		
+		{ USD_RUB, { USD, RUB } },
+		{ EUR_RUB, { EUR, RUB } },
+		{ EUR_USD, { EUR, USD } },
+		{ USDT_USD, { USDT, USD } },
+		{ BTC_USD, { BTC, USD } }
+	};
+	
 	static const std::map<ChangeCurrency, std::string> change_str = {
 		{ RUB_USD, "RUB - USD" },
 		{ RUB_EUR, "RUB - EUR" },

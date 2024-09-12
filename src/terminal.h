@@ -12,7 +12,7 @@ using ld = long double;
 class Terminal {
 	private:
 		std::map<NCurrency::Currency, Account*> accounts; // accounts like USD, RUB, BTC etc;	
-		
+														  
 		std::map<NCurrency::ChangeCurrency, ld> courses = {
 			{ NCurrency::RUB_USD, 0.011  },
 			{ NCurrency::RUB_EUR, 0.0099 },
@@ -21,13 +21,13 @@ class Terminal {
 			{ NCurrency::USD_BTC, 0.000018 }	
 		};
 
-		const int num_courses = courses.size();
+		void change_course(NCurrency::ChangeCurrency change_currency);
 
 	public:
 		Terminal();
 		~Terminal();
-		int change(User* user, NCurrency::Currency currency_from, NCurrency::Currency currency_to, NCurrency::ChangeCurrency change_currency, ld amount);
-		void change_course(NCurrency::ChangeCurrency change_currency);
+		int change(User* user, NCurrency::ChangeCurrency change_currency, ld amount);
+		ld get_course(NCurrency::ChangeCurrency change_currency);
 		void print_data();
 		void print_promt();
 };

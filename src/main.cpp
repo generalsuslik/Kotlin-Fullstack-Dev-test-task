@@ -52,8 +52,27 @@ void run() {
 			option = std::stoi(ans);
 		}
 		
+		NCurrency::ChangeCurrency change_currency = NCurrency::all_change_currencies[option - 1];
+		printf("%s\n", NCurrency::change_str.at(change_currency).c_str());
 		
+		if (option <= 5) {
+			printf("%Lf\n", terminal->get_course(change_currency));
+		} else {
+			printf("%.2Lf\n", terminal->get_course(change_currency));
+		}
 
+		NCurrency::Currency currency_from = NCurrency::change_currs.at(change_currency).first;
+		NCurrency::Currency currency_to   = NCurrency::change_currs.at(change_currency).second;
+
+		printf("Enter amount of %s to change:\n", NCurrency::titles.at(currency_from).c_str());
+		ld amount;
+		std::cin >> amount;
+
+		ld converted_amount = terminal->get_course(change_currency) * amount;
+		printf("%Lf %s converts to %Lf %s. Proceed? (Y/n) ", 
+						amount, NCurrency::titles.at(currency_from).c_str(), converted_amount, NCurrency::titles.at(currency_to).c_str());
+		std::cin >> ans;
+		
 		printf("Do you want to get your info? (Y/n) or type Q to quit\n");
 		std::cin >> ans;
 		if (ans == "Q" || ans == "q") {
