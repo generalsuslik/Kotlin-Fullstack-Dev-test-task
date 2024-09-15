@@ -43,7 +43,7 @@ int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld a
 
 	// CHECKING USER
 	if (user_amount < amount) {
-		printf("OPERATION ERROR: lack of money on the account.\n");
+		printf("\nOPERATION ERROR: lack of money on your account.\n\n");
 		return -1;
 	}
 
@@ -61,8 +61,10 @@ int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld a
 	// CHECKING TERMINAL
 	Account* terminal_account_to_remove = this->accounts[currency_to];
 	if (terminal_account_to_remove->get_info()->amount - converted_amount <= EPS) {
-		printf("OPERATION ERROR: lack of money on the %s terminal account\n", NCurrency::titles.at(currency_to).c_str());
-		printf("U wanna take %.2Lf, but there is only %.2Lf left\n", converted_amount, terminal_account_to_remove->get_info()->amount);
+		printf("\nOPERATION ERROR: lack of money on the %s terminal account\n", NCurrency::titles.at(currency_to).c_str());
+		printf("U want to take %.2Lf %s, but there is only %.2Lf %s left\n\n", 
+						converted_amount, NCurrency::titles.at(currency_to).c_str(), 
+						terminal_account_to_remove->get_info()->amount, NCurrency::titles.at(currency_to).c_str());
 		return -1;
 	}
 	
@@ -131,14 +133,6 @@ void Terminal::print_data() {
  */
 void Terminal::print_promt() {
 	printf("Change pairs and course:\n");
-	//int option = 1;
-	//for (const auto& [change_currency, str] : NCurrency::change_str) {
-	//	if (this->courses.find(change_currency) != this->courses.end()) {
-	//		printf("%d) %s %Lf\n", option++, str.c_str(), courses.at(change_currency));
-	//	} else { 
-	//		printf("%d) %s %.2Lf\n", option++, str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
-	//	}
-	//}
 	
 	size_t change_arr_size = NCurrency::rev_currency.size() * 2;
 	for (size_t option = 0; option < change_arr_size; ++option) {

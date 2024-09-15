@@ -72,6 +72,10 @@ void run() {
 		printf("%Lf %s converts to %Lf %s. Proceed? (Y/n) ", 
 						amount, NCurrency::titles.at(currency_from).c_str(), converted_amount, NCurrency::titles.at(currency_to).c_str());
 		std::cin >> ans;
+
+		if (ans == "Y" || ans == "y") {
+			terminal->change(user, change_currency, amount);
+		}
 		
 		printf("Do you want to get your info? (Y/n) or type Q to quit\n");
 		std::cin >> ans;
