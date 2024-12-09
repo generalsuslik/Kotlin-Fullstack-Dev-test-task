@@ -21,12 +21,12 @@ Terminal::Terminal() {
 
 	for (const auto& pair : start_amount) {
 		Account* account = new Account(pair.first, pair.second);
-		this->accounts[pair.first] = account;
+		accounts[pair.first] = account;
 	}
 }
 
 Terminal::~Terminal() {
-	for (const auto& pair : this->accounts) {
+	for (const auto& pair : accounts) {
 		delete pair.second; // delete Account*
 	} 
 }
@@ -48,18 +48,18 @@ int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld a
 	}
 
 	ld converted_amount = -1;
-	ld base = this->courses[change_currency];
-	if (this->courses.find(change_currency) == this->courses.end()) {
+	ld base = courses[change_currency];
+	if (courses.find(change_currency) == courses.end()) {
 		// reversed. for example: RUB_USD
 		NCurrency::ChangeCurrency reversed_currency = NCurrency::rev_currency.at(change_currency);
-		base = 1 / this->courses.at(reversed_currency);
+		base = 1 / courses.at(reversed_currency);
 		change_currency = reversed_currency;
 	}
 
 	converted_amount = base * amount;
 
 	// CHECKING TERMINAL
-	Account* terminal_account_to_remove = this->accounts[currency_to];
+	Account* terminal_account_to_remove = accounts[currency_to];
 	if (terminal_account_to_remove->get_info()->amount - converted_amount <= EPS) {
 		printf("\nOPERATION ERROR: lack of money on the %s terminal account\n", NCurrency::titles.at(currency_to).c_str());
 		printf("U want to take %.2Lf %s, but there is only %.2Lf %s left\n\n", 
@@ -76,7 +76,7 @@ int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld a
 	user_account_to_remove->get_info()->amount -= amount;
 
 	// terminal account to add money
-	Account* terminal_account_to_add = this->accounts[currency_from];
+	Account* terminal_account_to_add = accounts[currency_from];
 
 	// updating terminal money
 	terminal_account_to_remove->get_info()->amount -= converted_amount;
@@ -88,10 +88,10 @@ int Terminal::change(User* user, NCurrency::ChangeCurrency change_currency, ld a
 }
 
 ld Terminal::get_course(NCurrency::ChangeCurrency change_currency) {
-	if (this->courses.find(change_currency) != this->courses.end()) {
-		return this->courses.at(change_currency);
+	if (courses.find(change_currency) != courses.end()) {
+		return courses.at(change_currency);
 	} else {
-		return 1 / this->courses.at(NCurrency::rev_currency.at(change_currency));
+		return 1 / courses.at(NCurrency::rev_currency.at(change_currency));
 	}
 }
 
@@ -99,7 +99,7 @@ ld Terminal::get_course(NCurrency::ChangeCurrency change_currency) {
  * changes course randomly for +-5%
  */
 void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
-	ld course = this->courses[change_currency];
+	ld course = courses[change_currency];
 	
 	ld min_border = -0.05 * course;
 	ld max_border = 0.05 * course;
@@ -110,7 +110,7 @@ void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
 	std::uniform_real_distribution<ld> distribution(min_border, max_border);
 
 	ld res = distribution(generator);
-	this->courses[change_currency] += res;
+	courses[change_currency] += res;
 }
 
 /*
@@ -119,7 +119,7 @@ void Terminal::change_course(NCurrency::ChangeCurrency change_currency) {
 void Terminal::print_data() {
 	Account* account;
 	AccountInfo* account_info;
-	for (auto& account_pair : this->accounts) {
+	for (const auto& account_pair : accounts) {
 		account = account_pair.second;
 		account_info = account->get_info();
 		
@@ -138,17 +138,15 @@ void Terminal::print_promt() {
 	for (size_t option = 0; option < change_arr_size; ++option) {
 		NCurrency::ChangeCurrency change_currency = NCurrency::all_change_currencies[option];
 		std::string change_currency_str = NCurrency::change_str.at(change_currency);
-		if (this->courses.find(change_currency) != this->courses.end()) {
-			printf("%ld) %s %Lf\n", option + 1, change_currency_str.c_str(), this->courses.at(change_currency));
+		if (courses.find(change_currency) != courses.end()) {
+			printf("%ld) %s %Lf\n", option + 1, change_currency_str.c_str(), courses.at(change_currency));
 		} else {
-			printf("%ld) %s %.2Lf\n", option + 1, change_currency_str.c_str(), 1 / this->courses.at(NCurrency::rev_currency.at(change_currency)));
+			printf("%ld) %s %.2Lf\n", option + 1, change_currency_str.c_str(), 1 / courses.at(NCurrency::rev_currency.at(change_currency)));
 		}
 	}
 
 	printf("Select an option:\n");
 }
-
-
 
 
 
